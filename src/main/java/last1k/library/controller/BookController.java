@@ -1,7 +1,9 @@
 package last1k.library.controller;
 
+import last1k.library.dto.BookCreateDto;
 import last1k.library.dto.BookEditDto;
 import last1k.library.dto.BookReadDto;
+import last1k.library.mapper.BookCreateMapper;
 import last1k.library.service.BookService;
 import last1k.library.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class BookController {
 
     @PostMapping("/books/new")
     public String createBook(Model model, BookReadDto bookReadDto) {
-        BookReadDto book = bookService.create(bookReadDto);
+        BookCreateDto book = bookService.create(bookReadDto);
         model.addAttribute("book", book);
         return "redirect:/books/%s/edit".formatted(book.getId());
     }
@@ -53,8 +55,12 @@ public class BookController {
 
     @PostMapping("/books/{id}")
     public String book(Long personId, Model model, @PathVariable Long id) {
-        model.addAttribute("book", bookService.setPerson(personId, id));
+        model.addAttribute("book", bookService.patch(personId,  id, null));
         return "redirect:/books/" + id;
     }
+
+//    @PostMapping("/books/delete")
+//    public String deleteBook(Long id, Model model) {
+//    }
 
 }

@@ -3,13 +3,8 @@ package last1k.library.service;
 import last1k.library.database.entity.Book;
 import last1k.library.database.repository.BookRepository;
 import last1k.library.database.repository.PersonRepository;
-import last1k.library.dto.BookEditDto;
-import last1k.library.dto.BookReadDto;
-import last1k.library.dto.PersonReadDto;
-import last1k.library.mapper.BookEditMapper;
-import last1k.library.mapper.BookMapper;
-import last1k.library.mapper.BookReadMapper;
-import last1k.library.mapper.Mapper;
+import last1k.library.dto.*;
+import last1k.library.mapper.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +20,32 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class BookService {
-    @Autowired
-    private BookRepository bookRepository;
-    @Autowired
-    private PersonRepository personRepository;
-    @Autowired
-    private BookReadMapper bookReadMapper;
-    @Autowired
-    private BookEditMapper bookEditMapper;
-    @Autowired
-    private BookMapper bookMapper;
+
+    private final BookRepository bookRepository;
+
+    private final PersonRepository personRepository;
+
+    private final BookReadMapper bookReadMapper;
+
+    private final BookEditMapper bookEditMapper;
+
+    private final BookMapper bookMapper;
+
+    private final BookCreateMapper bookCreateMapper;
+
+    private final BookPatchMapper bookPatchMapper;
+
+
+//    @Autowired
+//    private BookRepository bookRepository;
+//    @Autowired
+//    private PersonRepository personRepository;
+//    @Autowired
+//    private BookReadMapper bookReadMapper;
+//    @Autowired
+//    private BookEditMapper bookEditMapper;
+//    @Autowired
+//    private BookMapper bookMapper;
 
 
 //    @Autowired
@@ -64,8 +75,8 @@ public class BookService {
                 .map(bookReadMapper::map).orElseThrow(IllegalArgumentException::new);
     }
 
-    public BookReadDto create(BookReadDto bookReadDto) {
-        return Optional.of(bookReadDto).map(bookMapper::map).map(bookRepository::save).map(bookReadMapper::map).orElseThrow(IllegalArgumentException::new);
+    public BookCreateDto create(BookReadDto bookReadDto) {
+        return Optional.of(bookReadDto).map(bookMapper::map).map(bookRepository::save).map(bookCreateMapper::map).orElseThrow(IllegalArgumentException::new);
     }
 
     public BookReadDto findById(Long id) {
@@ -74,16 +85,24 @@ public class BookService {
                 .orElseThrow(() -> new IllegalArgumentException("person with id = " + id + " not exists"));
     }
 
-    public BookReadDto setPerson(Long personId, Long id) {
-       return Optional.of(id).map(bookRepository::findById).orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + id + " не существует"))
-                .map(book -> {
-            book.setPerson(personRepository.findById(personId)
-                    .orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + personId + " не существует")));
-            return bookRepository.save(book);
-                })
-               .map(bookReadMapper::map).
-               orElseThrow(() -> new IllegalArgumentException("Я не знаю что ты сделал чтобы увидеть эту ошибку"));
+    public BookReadDto patch(Long personId, Long id, BookPatchDto bookPatchDto) {
+      return Optional.of(id)
+              .map(bookRepository::findById).orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + id + " не существует"))
+              .map(book -> bookPatchMapper.map(bookPatchDto, book))
+              .map(book -> {
+          book.setPerson(Optional.of(personId).map(personRepository::findById)
+                  .orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + personId + " не существует")).orElseThrow());
+          return bookRepository.save(book);
+      })
+              .map(bookReadMapper::map).orElseThrow();
     }
-
+// return Optional.of(id).map(bookRepository::findById).orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + id + " не существует"))
+//            .map(book -> {
+//        book.setPerson(personRepository.findById(personId)
+//                .orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + personId + " не существует")));
+//        return bookRepository.save(book);
+//    })
+//            .map(bookReadMapper::map).
+//    orElseThrow(() -> new IllegalArgumentException("Я не знаю что ты сделал чтобы увидеть эту ошибку"));
 
 }
