@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{/people/${person.id}/edit}" method="post">
+  <label for="fullName">Full name:
+    <input type="text" id="fullName" name="fullName" th:value="${person.getFullName()}"><br>
+  </label>
+  <label for="yearBirth">Year of birth:
+    <input type="text" id="yearBirth" name="yearBirth" th:value="${person.getYearBirth()}"><br>
+  </label>
+   <label for="id">
+       <input type="hidden" id="id" name="id" th:value="${person.getId()}"><br>
+   </label>
+
+  <button type="submit">Update</button>
+    </form>
+</body>
+</html>

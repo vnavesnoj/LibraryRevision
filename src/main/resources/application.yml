@@ -1,0 +1,31 @@
+logging:
+  level:
+    root: INFO
+    com.example.spring.database.pool: INFO
+    org.springframework.jdbc.core: TRACE
+  file:
+    name: application.log
+    path: /
+spring:
+  application:
+    name: spring-application-f2
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Last1k123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties.hibernate:
+      show_sql: true
+      format_sql: true
+    #        hbm2ddl.auto: update
+    #        ddl-auto: update
+    http:
+      encoding:
+        charset: UTF-8
+        enabled: true
+        force: true
