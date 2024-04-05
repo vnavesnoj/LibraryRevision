@@ -13,10 +13,15 @@ public class PersonReadMapper implements Mapper<Person, PersonReadDto> {
 
     @Override
     public PersonReadDto map(Person object) {
-        return new PersonReadDto(
-                object.getId(),
-                object.getFullName(),
-                object.getYearBirth()
-        );
+        if (object != null) {
+            return new PersonReadDto(
+                    object.getId(),
+                    object.getFullName(),
+                    object.getYearBirth()
+            );
+        } else {
+            return null;
+        }
+
     }
 }

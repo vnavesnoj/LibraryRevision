@@ -9,10 +9,15 @@ import org.springframework.stereotype.Component;
 public class PersonMapper implements Mapper<PersonReadDto, Person> {
     @Override
     public Person map(PersonReadDto object) {
-        return Person.builder()
-                .fullName(object.getFullName())
-                .yearBirth(object.getYearBirth())
-                .id(object.getId())
-                .build();
+        if (object != null) {
+            return Person.builder()
+                    .fullName(object.getFullName())
+                    .yearBirth(object.getYearBirth())
+                    .id(object.getId())
+                    .build();
+        } else {
+            return null;
+        }
+
     }
 }

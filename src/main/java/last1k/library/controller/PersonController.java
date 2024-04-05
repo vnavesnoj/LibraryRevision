@@ -1,7 +1,8 @@
-package last1k.library.database.controller;
+package last1k.library.controller;
 
 import last1k.library.dto.PersonEditDto;
 import last1k.library.dto.PersonReadDto;
+import last1k.library.service.BookService;
 import last1k.library.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class PersonController {
     @Autowired
     private PersonService personService;
+    @Autowired
+    private BookService bookService;
 
 
     @GetMapping("/people/new")
@@ -46,6 +49,13 @@ public class PersonController {
     public String peoplePage(Model model) {
         model.addAttribute("people", personService.findAll());
         return "people";
+    }
+
+    @GetMapping("people/{id}")
+    public String personPage(@PathVariable Long id, Model model) {
+        model.addAttribute("person", personService.findById(id));
+        model.addAttribute("books", bookService.findAllByPerson(id));
+        return "person";
     }
 }
 

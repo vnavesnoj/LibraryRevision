@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3 th:text="|${person.getFullName()}, ${person.getYearBirth()}|"></h3>
+    <div th:if="${books.size() == 0}">
+      <h3>Человек не взял не одной книги</h3>
+    </div>
+    <div th:if="${books.size() > 0}">
+      <ul>
+        <li th:each="book : ${books}" th:text="${book.getName()}">Имя книги</li>
+      </ul>
+    </div>
+
+</body>
+</html>

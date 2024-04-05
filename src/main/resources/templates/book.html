@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3 th:text="|${book.getName()}, ${book.getYear()}|"></h3>
+    <div th:if="${book.person == null}">
+        <form th:action="@{/books/{id}(id=${book.getId()})}" method="post">
+            Человек еще не взял ни одной книги, кому ее назначить?
+            <br>
+            <select name="personId" >
+                <option value="выберите"></option>
+                <option th:each="person : ${people}" th:value="${person.id}" th:text="${person.fullName}">Выбрать</option>
+            </select>
+            <button type="submit">update</button>
+        </form>
+    </div>
+    <div th:if="${book.person != null}">
+        <span th:text="${book.person.fullName}">Имя человека</span>
+    </div>
+
+</body>
+</html>
