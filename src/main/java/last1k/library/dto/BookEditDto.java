@@ -1,5 +1,6 @@
 package last1k.library.dto;
 
+import lombok.NonNull;
 import lombok.Value;
 
 /**
@@ -9,8 +10,10 @@ import lombok.Value;
 @Value
 public class BookEditDto {
 
+    @NonNull
     String author;
 
+    @NonNull
     String name;
 
     Integer year;
