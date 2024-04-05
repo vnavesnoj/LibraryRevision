@@ -24,7 +24,7 @@ public class BookReadMapper implements Mapper<Book, BookReadDto> {
                 object.getAuthor(),
                 object.getName(),
                 object.getYear(),
-                personReadMapper.map(object.getPerson())
+                object.getPerson() != null ? personReadMapper.map(object.getPerson()) : null
         );
     }
 }
