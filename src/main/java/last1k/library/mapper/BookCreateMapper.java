@@ -5,13 +5,13 @@ import last1k.library.dto.BookCreateDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookCreateMapper implements Mapper<Book, BookCreateDto> {
+public class BookCreateMapper implements Mapper<BookCreateDto, Book> {
+
     @Override
-    public BookCreateDto map(Book object) {
-        return BookCreateDto.builder()
+    public Book map(BookCreateDto object) {
+        return Book.builder()
                 .name(object.getName())
                 .year(object.getYear())
-                .id(object.getId())
                 .author(object.getAuthor())
                 .build();
     }

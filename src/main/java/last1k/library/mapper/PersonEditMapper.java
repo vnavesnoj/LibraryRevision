@@ -30,6 +30,5 @@ public class PersonEditMapper implements Mapper<PersonEditDto, Person> {
     private void copy(PersonEditDto from, Person to) {
        to.setFullName(from.getFullName());
        to.setYearBirth(from.getYearBirth());
-       personRepository.save(to);
     }
 }

@@ -1,5 +1,6 @@
 package last1k.library.controller;
 
+import last1k.library.dto.PersonCreateDto;
 import last1k.library.dto.PersonEditDto;
 import last1k.library.dto.PersonReadDto;
 import last1k.library.service.BookService;
@@ -27,8 +28,8 @@ public class PersonController {
     }
 
     @PostMapping("/people/new")
-    public String createPerson(PersonReadDto personReadDto, Model model) {
-        PersonReadDto person = personService.create(personReadDto);
+    public String createPerson(PersonCreateDto personCreateDto, Model model) {
+        PersonReadDto person = personService.create(personCreateDto);
         model.addAttribute("person", person);
         return "redirect:/people/%s/edit".formatted(person.getId());
     }

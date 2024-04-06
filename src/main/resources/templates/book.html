@@ -12,7 +12,7 @@
             <br>
             <select name="personId" >
                 <option value="выберите"></option>
-                <option th:each="person : ${people}" th:value="${person.id}" th:text="${person.fullName}">Выбрать</option>
+                <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.fullName}">Выбрать</option>
             </select>
             <button type="submit">update</button>
         </form>

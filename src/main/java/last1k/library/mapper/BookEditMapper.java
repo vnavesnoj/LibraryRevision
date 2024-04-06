@@ -32,6 +32,6 @@ public class BookEditMapper implements Mapper<BookEditDto, Book> {
         to.setAuthor(from.getAuthor());
         to.setName(from.getName());
         to.setYear(from.getYear());
-        bookRepository.save(to);
+//        bookRepository.save(to);
     }
 }

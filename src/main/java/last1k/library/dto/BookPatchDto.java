@@ -12,5 +12,5 @@ public class BookPatchDto {
 
     Integer year;
 
-    PersonReadDto person;
+    Long personId;
 }

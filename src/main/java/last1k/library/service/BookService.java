@@ -7,6 +7,7 @@ import last1k.library.dto.*;
 import last1k.library.mapper.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
  */
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class BookService {
 
     private final BookRepository bookRepository;
@@ -36,23 +38,6 @@ public class BookService {
     private final BookPatchMapper bookPatchMapper;
 
 
-//    @Autowired
-//    private BookRepository bookRepository;
-//    @Autowired
-//    private PersonRepository personRepository;
-//    @Autowired
-//    private BookReadMapper bookReadMapper;
-//    @Autowired
-//    private BookEditMapper bookEditMapper;
-//    @Autowired
-//    private BookMapper bookMapper;
-
-
-//    @Autowired
-//    private Mapper<Book, BookReadDto> bookReadMapper;
-//    @Autowired
-//    private Mapper<BookEditDto, Book> bookEditMapper;
-
     public List<BookReadDto> findAll() {
         return bookRepository.findAll().stream()
                 .map(bookReadMapper::map)
@@ -68,41 +53,33 @@ public class BookService {
                 .orElseThrow(() -> new IllegalArgumentException("person with id = " + personId + " not exists"));
     }
 
-    public BookReadDto update(Long id, BookEditDto bookDto) {
+    public BookReadDto update(@NonNull Long id, @NonNull BookEditDto bookDto) {
         return bookRepository.findById(id)
                 .map(entity -> bookEditMapper.map(bookDto, entity))
                 .map(bookRepository::saveAndFlush)
                 .map(bookReadMapper::map).orElseThrow(IllegalArgumentException::new);
     }
 
-    public BookCreateDto create(BookReadDto bookReadDto) {
-        return Optional.of(bookReadDto).map(bookMapper::map).map(bookRepository::save).map(bookCreateMapper::map).orElseThrow(IllegalArgumentException::new);
+    public BookReadDto create(@NonNull BookCreateDto bookCreateDto) {
+        return Optional.of(bookCreateDto)
+                .map(bookCreateMapper::map)
+                .map(bookRepository::saveAndFlush)
+                .map(bookReadMapper::map)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
-    public BookReadDto findById(Long id) {
+    public BookReadDto findById(@NonNull Long id) {
         return bookRepository.findById(id)
                 .map(bookReadMapper::map)
                 .orElseThrow(() -> new IllegalArgumentException("person with id = " + id + " not exists"));
     }
 
-    public BookReadDto patch(Long personId, Long id, BookPatchDto bookPatchDto) {
-      return Optional.of(id)
-              .map(bookRepository::findById).orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + id + " не существует"))
-              .map(book -> bookPatchMapper.map(bookPatchDto, book))
-              .map(book -> {
-          book.setPerson(Optional.of(personId).map(personRepository::findById)
-                  .orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + personId + " не существует")).orElseThrow());
-          return bookRepository.save(book);
-      })
-              .map(bookReadMapper::map).orElseThrow();
+    public BookReadDto patch(@NonNull Long id, @NonNull BookPatchDto bookPatchDto) {
+        log.info(bookPatchDto.toString());
+        return bookRepository.findById(id)
+                .map(entity -> bookPatchMapper.map(bookPatchDto, entity))
+                .map(bookRepository::saveAndFlush)
+                .map(bookReadMapper::map).orElseThrow(IllegalArgumentException::new);
+        }
     }
-// return Optional.of(id).map(bookRepository::findById).orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + id + " не существует"))
-//            .map(book -> {
-//        book.setPerson(personRepository.findById(personId)
-//                .orElseThrow(() -> new IllegalArgumentException("Пользователя под id " + personId + " не существует")));
-//        return bookRepository.save(book);
-//    })
-//            .map(bookReadMapper::map).
-//    orElseThrow(() -> new IllegalArgumentException("Я не знаю что ты сделал чтобы увидеть эту ошибку"));
 
-}
