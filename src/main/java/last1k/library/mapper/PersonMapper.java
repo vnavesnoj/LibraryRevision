@@ -5,6 +5,7 @@ import last1k.library.dto.BookReadDto;
 import last1k.library.dto.PersonReadDto;
 import org.springframework.stereotype.Component;
 
+// Класс нигде не используется. Удаляем.
 @Component
 public class PersonMapper implements Mapper<PersonReadDto, Person> {
     @Override

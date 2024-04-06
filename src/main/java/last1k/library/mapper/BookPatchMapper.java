@@ -15,6 +15,7 @@ import java.util.Optional;
 public class BookPatchMapper implements Mapper<BookPatchDto, Book> {
     private final PersonRepository personRepository;
 
+    // Не используем. Удаляем поле.
     private final PersonMapper personMapper;
 
     @Override
@@ -41,6 +42,7 @@ public class BookPatchMapper implements Mapper<BookPatchDto, Book> {
             to.setYear(from.getYear());
         }
         if (from.getPersonId() != null) {
+            // Слишком длинная строка. Делаем переносы строк
             to.setPerson(personRepository.findById(from.getPersonId()).orElseThrow(() -> new IllegalArgumentException("пользователя под id" + from.getPersonId() + " не существует")));
         }
     }

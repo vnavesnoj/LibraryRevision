@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PersonEditMapper implements Mapper<PersonEditDto, Person> {
+
+    //Поле лишнее. Удаляем
     @Autowired
     private PersonRepository personRepository;
 

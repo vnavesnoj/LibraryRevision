@@ -21,12 +21,18 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
+    // private final Mapper<Person, PersonReadDto> personReadMapper;
     private final PersonReadMapper personReadMapper;
 
+    // private final Mapper<PersonEditDto, Person> personEditMapper;
     private final PersonEditMapper personEditMapper;
 
+    // private final Mapper<PersonCreateDto, Person> personCreateMapper;
     private final PersonCreateMapper personCreateMapper;
 
+    // Поставь сам аннотации @NonNull к параметрам методов, которые в теории могут быть null.
+    // Пример есть в BookService
+    // Так же проставь аннотации @Transactional. Про это можно вспомнить из курса Матвеенко на соотвествующую аннотацию
 
     public PersonReadDto findById(Long id) {
         return personRepository.findById(id)
@@ -43,6 +49,7 @@ public class PersonService {
         return personRepository.findById(id).map((person) -> personEditMapper.map(personEditDto, person))
                 .map(personRepository::saveAndFlush)
                 .map(personReadMapper::map)
+                // .orElseThrow(() -> new IllegalArgumentException("person with id = " + id + " not exists"));
                 .orElseThrow(() -> new IllegalArgumentException("this information is not correct"));
     }
 
@@ -52,6 +59,8 @@ public class PersonService {
                 .map(personRepository::save)
                 .map(personReadMapper::map)
                 .orElseThrow(() ->
+                        // Нет констрєйнта UNIQUE на поле fullName.
+                        // new IllegalArgumentException("person with id = " + id + " not exists"));
                         new IllegalArgumentException("User under name (" + personCreateDto.getFullName() + ") already exists"));
     }
 

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BookEditMapper implements Mapper<BookEditDto, Book> {
+
+    // Ни где не используем. Поле удаляем.
     @Autowired
     private BookRepository bookRepository;
 
